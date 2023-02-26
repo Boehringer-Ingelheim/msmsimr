@@ -1,0 +1,34 @@
+Package: simmsm
+Type: Package
+Title: Simulate Multi-State Survival Data
+Version: 0.1.0.9000
+Authors@R: c(
+    person("Kevin", "Kunzmann",
+      role = c("aut", "cre"),
+      email = "kevin.kunzmann@boehringer-ingelheim.com",
+      comment = c(ORCID = "0000-0002-1140-7143")
+    ),
+    person(
+      "Boehringer Ingelheim Pharma GmbH & Co. KG",
+      role = c("cph", "fnd")
+    )
+  )
+Description: Simulate multi-state data and fit model to summary data.
+License: Apache License (>= 2)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports:
+    checkmate,
+    magrittr,
+    tibble,
+    dplyr,
+    tidyr,
+    mstate
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)
