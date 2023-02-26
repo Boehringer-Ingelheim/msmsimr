@@ -240,7 +240,7 @@ gradient(initial_values)
 
 Let's have a look at the start.
 
-```{r}
+```{r, eval=FALSE}
 plot_pfs_os <- function(data1, data2) {
   tbl <- bind_rows(
     kaplan_meier(data1, "start", c("progression", "death")) %>% 
@@ -269,7 +269,7 @@ next_state_probabilities(msm, new_data, as_matrix = TRUE)
 
 Try good old gradient descent first.
 
-```{r}
+```{r, eval=FALSE}
 res <- simmsm:::gradient_descent(
   negative_log_likelihood,
   gradient,
@@ -285,7 +285,7 @@ opt <- res[[1]][which.min(res[[2]]), ]
 round(opt, 3)
 ```
 
-```{r}
+```{r, eval=FALSE}
 new_data <- simulate(update_parameters(msm2, opt))
 plot_pfs_os(data_fix, new_data)
 
