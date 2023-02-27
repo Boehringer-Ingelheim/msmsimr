@@ -28,18 +28,45 @@
     <loc>/reference/as_TransitionMatrix.html</loc>
   </url>
   <url>
+    <loc>/reference/calibration_probability.html</loc>
+  </url>
+  <url>
+    <loc>/reference/calibration_survival_curve.html</loc>
+  </url>
+  <url>
+    <loc>/reference/censor.html</loc>
+  </url>
+  <url>
     <loc>/reference/cumulative_hazard.html</loc>
+  </url>
+  <url>
+    <loc>/reference/example_calibration_data.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/kaplan_meier.html</loc>
+  </url>
+  <url>
+    <loc>/reference/log_likelihood.html</loc>
+  </url>
+  <url>
+    <loc>/reference/msmsimr-package.html</loc>
+  </url>
+  <url>
+    <loc>/reference/next_state_probabilities.html</loc>
+  </url>
+  <url>
     <loc>/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>/reference/simmsm-package.html</loc>
+    <loc>/reference/survival-distribution.html</loc>
   </url>
   <url>
-    <loc>/reference/survival-distribution.html</loc>
+    <loc>/reference/survival.html</loc>
+  </url>
+  <url>
+    <loc>/reference/to_vector.html</loc>
   </url>
 </urlset>
