@@ -1,7 +1,7 @@
 #' @export
 kaplan_meier <- function(msm, from, to, data = simulate(msm), tidy = TRUE) {
-  f <- function(to, Tstart, Tstop, duration, status) {
-    idx <- which(to %in% to & status == 1)
+  f <- function(to_, Tstart, Tstop, duration, status) {
+    idx <- which(to_ %in% to & status == 1)
     if (length(idx) == 0) {
       idx <- length(to)
       status <- 0

@@ -30,12 +30,12 @@ cumulative_hazard <- function(t, dst) {
 }
 
 #' @export
-as_vector <- function(x) {
-  UseMethod("as_vector", object = x)
+to_vector <- function(x) {
+  UseMethod("to_vector", object = x)
 }
 
 #' @export
-as_vector.default <- function(x) {
+to_vector.default <- function(x) {
   res <- if (attr(x, "optimize")) {
     unlist(x)
   } else {
@@ -66,7 +66,7 @@ Exponential <- function(lambda, optimize = FALSE) {
     lower = sqrt(.Machine$double.eps)
   )
   structure(list(
-      lambda = lambda
+      log_lambda = log(lambda)
     ),
     optimize = optimize,
     class = c("Exponential", "SurvivalDistribution")
@@ -79,5 +79,5 @@ cumulative_hazard.Exponential <- function(t, dst) {
     t, finite = TRUE, any.missing = FALSE, min.len = 1L, null.ok = FALSE,
     lower = 0
   )
-  return(dst$lambda*t)
+  return(exp(dst$log_lambda)*t)
 }

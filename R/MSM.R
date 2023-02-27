@@ -84,8 +84,8 @@ get_transition_distribution <- function(msm, index) {
 
 
 #' @export
-as_vector.MSM <- function(x) {
-  do.call(c, lapply(x, as_vector))
+to_vector.MSM <- function(x) {
+  do.call(c, lapply(x, to_vector))
 }
 
 
@@ -99,7 +99,7 @@ as_vector.MSM <- function(x) {
 #' @export
 update_parameters <- function(msm, params) {
   checkmate::assert_class(msm, "MSM")
-  assertthat::assert_that(length(params) == length(as_vector(msm)))
+  assertthat::assert_that(length(params) == length(to_vector(msm)))
   idx <- 0L
   for (i in seq_along(msm)) {
     if (!attr(msm[[i]], "optimize")) {

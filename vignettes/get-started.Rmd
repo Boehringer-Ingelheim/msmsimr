@@ -183,7 +183,9 @@ cal3 <- with(example_calibration_data$tbl_km_os,
       "start", "death", time = t, survival = est, standard_error = se
     )
   )
+```
 
+```{r}
 lls <- purrr::map_dbl(1:5, ~log_likelihood(msm, cal1, cal2, cal3))
 mean(lls)
 sd(lls)/sqrt(5) # not ideal - quite variable; bump nsim? needs to be a lot faster
@@ -198,7 +200,7 @@ Need to keep one of the 'response' transitions and the post-progression
 transitions fixed to make this identifiable.
 
 ```{r}
-as_vector(msm)
+to_vector(msm)
 
 msm2 <- MSM(
   Exponential(log(2)/12, optimize = TRUE),
@@ -209,8 +211,8 @@ msm2 <- MSM(
   tmax = 60
 )
 
-as_vector(msm2)
-as_vector(update_parameters(msm2, c(1, 1)))
+to_vector(msm2)
+to_vector(update_parameters(msm2, c(1, 1)))
 ```
 
 We minimize the negative log likelihood.
@@ -228,7 +230,7 @@ negative_log_likelihood <- function(x) { # minimization - multiply with -1
 }
 
 # the gradient is super expensive with more parameters
-gradient <- function(x, eps = 0.025) { # use relative large eps to make robust vs noise
+gradient <- function(x, eps = 0.1) { # use relative large eps to make robust vs noise
   numDeriv::grad(negative_log_likelihood,
     x, method = "simple", method.args = list(eps = eps))
 }
@@ -236,7 +238,7 @@ gradient <- function(x, eps = 0.025) { # use relative large eps to make robust v
 true_values <- unlist(msm)[c(1, 2)]
 true_values
 # some start value
-initial_values <- as_vector(msm2)
+initial_values <- to_vector(msm2)
 initial_values
 # check objective
 negative_log_likelihood(initial_values)
@@ -248,15 +250,15 @@ gradient(initial_values)
 Plot starting values.
 
 ```{r}
-plot_pfs_os <- function(data1, data2) {
+plot_pfs_os <- function(msm1, data1, msm2, data2) {
   tbl <- bind_rows(
-    kaplan_meier(data1, "start", c("progression", "death")) %>% 
+    kaplan_meier(msm1, "start", c("progression", "death"), data = data1) %>% 
       mutate(model = "A", endpoint = "PFS"),
-    kaplan_meier(data2, "start", c("progression", "death")) %>% 
+    kaplan_meier(msm2, "start", c("progression", "death"), data = data2) %>% 
       mutate(model = "B", endpoint = "PFS"),
-    kaplan_meier(data1, "start", "death") %>% 
+    kaplan_meier(msm1, "start", "death", data = data1) %>% 
       mutate(model = "A", endpoint = "OS"),
-    kaplan_meier(data2, "start", "death") %>% 
+    kaplan_meier(msm2, "start", "death", data = data2) %>% 
       mutate(model = "B", endpoint = "OS")
   )
   ggplot(tbl) +
@@ -267,23 +269,22 @@ plot_pfs_os <- function(data1, data2) {
 
 data_fix <- simulate(msm)
 new_data <- simulate(msm2)
-plot_pfs_os(data_fix, new_data)
+plot_pfs_os(msm, data_fix, msm2, new_data)
 
 next_state_probabilities(msm, data_fix, as_matrix = TRUE)
-next_state_probabilities(msm, new_data, as_matrix = TRUE)
+next_state_probabilities(msm2, new_data, as_matrix = TRUE)
 ```
 
 Try good old gradient descent first.
 
 ```{r}
+set.seed(42L)
+
 res <- simmsm:::gradient_descent(
   negative_log_likelihood,
   gradient,
   init = initial_values,
-  lower = rep(log(2)/36, 2),
-  upper = rep(log(2)/1, 2),
-  rate = 1/1000,
-  momentum = 0.25,
+  rate = 1/10,
   niter = 20
 )
 
@@ -295,10 +296,10 @@ Compare solution with ground truth.
 
 ```{r}
 new_data <- simulate(update_parameters(msm2, opt))
-plot_pfs_os(data_fix, new_data)
+plot_pfs_os(msm, data_fix, msm2, new_data)
 
 next_state_probabilities(msm, data_fix, as_matrix = TRUE)
-next_state_probabilities(msm, new_data, as_matrix = TRUE)
+next_state_probabilities(msm2, new_data, as_matrix = TRUE)
 ```
 
 Working ok, try different optimizers?

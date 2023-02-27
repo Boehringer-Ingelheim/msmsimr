@@ -23,15 +23,15 @@ msm <- MSM(
   tmax = 60
 )
 
-tbl_data <- simulate(msm, nsim = 2^12)
-time_points <- c(0, 3, 6, 12, 24, 36)
+tbl_data <- simulate(msm, nsim = 2^9)
 
 example_calibration_data <- list(
   pr_start_response = next_state_probabilities(msm, tbl_data, as_matrix = TRUE)["start", "response"],
-  pr_start_response_se = 0.05
+  pr_start_response_se = 0.075
 )
 
-tbl_km_pfs <- kaplan_meier(tbl_data, "start", c("progression", "death"))
+tbl_km_pfs <- kaplan_meier(msm, "start", c("progression", "death"), data = tbl_data)
+time_points <- c(0, 3, 6, 12, 24)
 example_calibration_data$tbl_km_pfs <- with(tbl_km_pfs,
   tibble::tibble(
     t = time_points,
@@ -40,21 +40,13 @@ example_calibration_data$tbl_km_pfs <- with(tbl_km_pfs,
   )
 )
 
-tbl_km_os <- kaplan_meier(tbl_data, "start", "death")
+tbl_km_os <- kaplan_meier(msm, "start", "death", data = tbl_data)
+time_points <- c(0, 3, 6, 12, 24, 36)
 example_calibration_data$tbl_km_os <- with(tbl_km_os,
   tibble::tibble(
     t = time_points,
     est = approx(time, estimate, xout = time_points, yleft = 1, rule = 2, method = "constant")$y,
     se = approx(time, std.error, xout = time_points, yleft = 1, rule = 2, method = "constant")$y
-  )
-)
-
-tbl_km_pd <- kaplan_meier(tbl_data, "progression", "death")
-example_calibration_data$tbl_km_progression_death <- with(tbl_km_pd,
-  tibble::tibble(
-    t = 6,
-    est = approx(time, estimate, xout = 6, yleft = 1, rule = 2, method = "constant")$y,
-    se = approx(time, std.error, xout = 6, yleft = 1, rule = 2, method = "constant")$y
   )
 )
 
