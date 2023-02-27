@@ -9,17 +9,21 @@ next_state_probabilities <- function(msm, data = simulate(msm), as_matrix = FALS
         to = state_labels
       )
     ) %>%
-    dplyr::group_by(from, to) %>%
+    dplyr::group_by(.data$from, .data$to) %>%
     dplyr::count() %>%
-    dplyr::group_by(from) %>%
+    dplyr::group_by(.data$from) %>%
     dplyr::mutate(
-      probability = if (sum(n) == dplyr::n()) rep(0, dplyr::n()) else (n - 1) / (sum(n) - dplyr::n())
+      probability = if (sum(.data$n) == dplyr::n()) {
+          rep(0, dplyr::n())
+        } else {
+          (.data$n - 1) / (sum(.data$n) - dplyr::n())
+        }
     ) %>%
-    dplyr::select(-n) %>%
+    dplyr::select(-"n") %>%
     dplyr::ungroup()
   if (as_matrix) {
     res <- res %>%
-      tidyr::pivot_wider(names_from = to, values_from = probability) %>%
+      tidyr::pivot_wider(names_from = .data$to, values_from = .data$probability) %>%
       tibble::column_to_rownames("from") %>%
       as.matrix()
     # rearrange

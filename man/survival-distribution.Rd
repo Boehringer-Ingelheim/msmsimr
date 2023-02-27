@@ -6,6 +6,4 @@
 \description{
 ...
 }
-\seealso{
-\link{LogNormal}, \code{\link[=cumulative_hazard]{cumulative_hazard()}}
-}
+\concept{survival-distributions}

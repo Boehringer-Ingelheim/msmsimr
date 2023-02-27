@@ -7,7 +7,7 @@
 as_TransitionMatrix(tmat, state_labels = colnames(tmat))
 }
 \arguments{
-\item{tmat}{a k-by-k integer-ish matrix where tmat\link{i,j} is missing if the
+\item{tmat}{a k-by-k integer-ish matrix where \code{tmat[i,j]} is missing if the
 transition is impossible and an integer otherwise. The integers must be
 unique and sequential since they are used to index into the list of
 transition distributions.}

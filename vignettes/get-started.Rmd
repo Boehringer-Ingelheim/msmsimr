@@ -7,8 +7,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
+  eval = TRUE,
   collapse = TRUE,
   comment = "#>",
   fig.width = 7,
@@ -18,7 +19,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-options(tidyverse.quite = TRUE)
+options(tidyverse.quiet = TRUE)
 library(tidyverse, warn.conflicts = TRUE)
 
 library(future)
@@ -105,13 +106,13 @@ endpoints.
 ```{r}
 plot_model <- function(data) {
   old_pars <- par(mfrow = c(2, 2), mar = c(2, 2, 2, 1))
-  plot(kaplan_meier(data, "start", "response", FALSE), xlim = c(0, 36))
+  plot(kaplan_meier(msm, "start", "response", data, FALSE), xlim = c(0, 36))
   title("response")
-  plot(kaplan_meier(data, "progression", "death", FALSE), xlim = c(0, 36))
+  plot(kaplan_meier(msm, "progression", "death", data, FALSE), xlim = c(0, 36))
   title("progression->death")
-  plot(kaplan_meier(data, "start", c("progression", "death"), FALSE), xlim = c(0, 36))
+  plot(kaplan_meier(msm, "start", c("progression", "death"), data, FALSE), xlim = c(0, 36))
   title("PFS")
-  plot(kaplan_meier(data, "start", "death", FALSE), xlim = c(0, 36))
+  plot(kaplan_meier(msm, "start", "death", data, FALSE), xlim = c(0, 36))
   title("OS")
   par(old_pars)
 }
@@ -191,9 +192,10 @@ sd(lls)/sqrt(5) # not ideal - quite variable; bump nsim? needs to be a lot faste
 This approximate likelihood can be optimized.
 
 First, need to make parameters tunable. PFS/OS and response rate alone are
-insufficient to identify all transitions.
+insufficient to identify all transitions, so assuming we have additional evidence
+on progression -> death and response -> progression (assumed fixed).
 Need to keep one of the 'response' transitions and the post-progression
-transitions fixed.
+transitions fixed to make this identifiable.
 
 ```{r}
 as_vector(msm)
@@ -211,7 +213,12 @@ as_vector(msm2)
 as_vector(update_parameters(msm2, c(1, 1)))
 ```
 
-```{r, eval=FALSE}
+We minimize the negative log likelihood.
+The problem is the gradient which can only be approximated via finite
+differences and sampling.
+This is slow and imprecise.
+
+```{r}
 negative_log_likelihood <- function(x) { # minimization - multiply with -1
   res <- -log_likelihood(
       update_parameters(msm2, x),
@@ -226,7 +233,7 @@ gradient <- function(x, eps = 0.025) { # use relative large eps to make robust v
     x, method = "simple", method.args = list(eps = eps))
 }
 
-true_values<- unlist(msm)[c(1, 2)]
+true_values <- unlist(msm)[c(1, 2)]
 true_values
 # some start value
 initial_values <- as_vector(msm2)
@@ -238,9 +245,9 @@ negative_log_likelihood(true_values)
 gradient(initial_values)
 ```
 
-Let's have a look at the start.
+Plot starting values.
 
-```{r, eval=FALSE}
+```{r}
 plot_pfs_os <- function(data1, data2) {
   tbl <- bind_rows(
     kaplan_meier(data1, "start", c("progression", "death")) %>% 
@@ -266,10 +273,9 @@ next_state_probabilities(msm, data_fix, as_matrix = TRUE)
 next_state_probabilities(msm, new_data, as_matrix = TRUE)
 ```
 
-
 Try good old gradient descent first.
 
-```{r, eval=FALSE}
+```{r}
 res <- simmsm:::gradient_descent(
   negative_log_likelihood,
   gradient,
@@ -285,7 +291,9 @@ opt <- res[[1]][which.min(res[[2]]), ]
 round(opt, 3)
 ```
 
-```{r, eval=FALSE}
+Compare solution with ground truth.
+
+```{r}
 new_data <- simulate(update_parameters(msm2, opt))
 plot_pfs_os(data_fix, new_data)
 
@@ -293,7 +301,11 @@ next_state_probabilities(msm, data_fix, as_matrix = TRUE)
 next_state_probabilities(msm, new_data, as_matrix = TRUE)
 ```
 
-Working ok, try different optimizers etc.
+Working ok, try different optimizers?
+
+Advantage of this setup: can plug-in distributions fitted with different 
+packages (just provide cum haz table); only need to fill in the blanks.
+Complete;y arbitrary MSM structure.
 
 The fitted model can then be used to simulate multi-state IDM data.
 

@@ -5,7 +5,7 @@
 #' @description ...
 #'
 #' @name survival-distribution
-#' @seealso [LogNormal], [cumulative_hazard()]
+#' @family survival-distributions
 NULL
 
 

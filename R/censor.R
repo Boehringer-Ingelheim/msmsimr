@@ -2,12 +2,12 @@
 censor <- function(data, t = Inf) {
   checkmate::assert_data_frame(data, min.rows = 1L)
   data %>%
-    dplyr::filter(Tstart <= t) %>%
+    dplyr::filter(.data$Tstart <= t) %>%
     dplyr::mutate(
-      status = dplyr::if_else(Tstop > t, 0, status), # censored?
-      Tstop = pmin(t, Tstop),
-      duration = Tstop - Tstart,
-      to = dplyr::if_else(status == 0, NA, to),
-      trans = dplyr::if_else(status == 0, NA, trans)
+      status = dplyr::if_else(.data$Tstop > t, 0, .data$status),
+      Tstop = pmin(.data$t, .data$Tstop),
+      duration = .data$Tstop - .data$Tstart,
+      to = dplyr::if_else(.data$status == 0, NA, .data$to),
+      trans = dplyr::if_else(.data$status == 0, NA, .data$trans)
     )
 }

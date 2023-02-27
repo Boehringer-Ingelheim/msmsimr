@@ -1,7 +1,7 @@
 #' @export
-kaplan_meier <- function(data, starting_state, events, tidy = TRUE) {
+kaplan_meier <- function(msm, from, to, data = simulate(msm), tidy = TRUE) {
   f <- function(to, Tstart, Tstop, duration, status) {
-    idx <- which(to %in% events & status == 1)
+    idx <- which(to %in% to & status == 1)
     if (length(idx) == 0) {
       idx <- length(to)
       status <- 0
@@ -17,14 +17,15 @@ kaplan_meier <- function(data, starting_state, events, tidy = TRUE) {
     ))
   }
   km_data <- data %>%
-    dplyr::filter(as.integer(.data$from) >= which(get_state_labels(msm) == starting_state)) %>%
-    dplyr::group_by(id) %>%
+    dplyr::filter(as.integer(.data$from) >= which(get_state_labels(msm) == !!from)) %>%
+    dplyr::group_by(.data$id) %>%
     dplyr::summarize(
-      res = f(to, Tstart, Tstop, duration, status)
+      res = f(.data$to, .data$Tstart, .data$Tstop, .data$duration, .data$status)
     ) %>%
-    tidyr::unnest(res)
+    tidyr::unnest(.data$res)
   res <- survival::survfit(survival::Surv(duration, status) ~ 1, data = km_data)
-  if (tidy)
+  if (tidy) {
     res <- broom::tidy(res)
+  }
   return(res)
 }

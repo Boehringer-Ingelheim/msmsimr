@@ -3,7 +3,7 @@
 #' @description Check a multi-state transition matrix for consistency and
 #'  turn it into a matrix of class `TransitionMatrix`
 #'
-#' @param tmat a k-by-k integer-ish matrix where tmat[i,j] is missing if the
+#' @param tmat a k-by-k integer-ish matrix where `tmat[i,j]` is missing if the
 #'  transition is impossible and an integer otherwise. The integers must be
 #'  unique and sequential since they are used to index into the list of
 #'  transition distributions.

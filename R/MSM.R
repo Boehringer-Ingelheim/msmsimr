@@ -122,10 +122,11 @@ simulate.MSM <- function(
   object,
   nsim = attr(object, "m"),
   seed = NULL,
-  tmax = get_tmax(msm),
+  tmax = get_tmax(object),
   grid_size = attr(object, "grid_size"),
-  hazard_ratios = rep(1, length(msm)),
-  batches = parallel::detectCores()
+  hazard_ratios = rep(1, length(object)),
+  batches = parallel::detectCores(),
+  ...
 ) {
   if (!is.null(seed)) {
     set.seed(seed)
@@ -136,12 +137,12 @@ simulate.MSM <- function(
       time = time_grid,
       trans = seq_along(object)
     ) %>%
-    dplyr::group_by(trans) %>%
+    dplyr::group_by(.data$trans) %>%
     dplyr::mutate(
         Haz = cumulative_hazard(
-          t = time,
-          dst = get_transition_distribution(object, trans[1])
-        ) * hazard_ratios[trans[1]]
+          t = .data$time,
+          dst = get_transition_distribution(object, .data$trans[1])
+        ) * hazard_ratios[.data$trans[1]]
     ) %>%
     dplyr::ungroup()
   # sample; c++ implementation of https://doi.org/10.1002/sim.3305 might be quicker
@@ -151,26 +152,26 @@ simulate.MSM <- function(
     dplyr::mutate(
       batch = dplyr::row_number() %% batches
     ) %>%
-    dplyr::group_by(batch) %>%
+    dplyr::group_by(.data$batch) %>%
     dplyr::summarize(
-      ids = list(id)
+      ids = list(.data$id)
     ) %>%
     dplyr::mutate(
       res = furrr::future_map(
-          ids,
+          .data$ids,
           mstate_mssample_wrapper,
           tbl_cumhaz,
           get_tmat(object),
           .options = furrr::furrr_options(seed = TRUE)
         )
     ) %>%
-    tidyr::unnest(res) %>%
-    dplyr::select(-batch, -ids)
+    tidyr::unnest(.data$res) %>%
+    dplyr::select(-.data$batch, -.data$ids)
   res %>%
-    dplyr::filter(status == 1) %>%
+    dplyr::filter(.data$status == 1) %>%
     dplyr::mutate(
-      across(
-        c(from, to),
+      dplyr::across(
+        c(.data$from, .data$to),
         ~factor(., levels = seq_along(object), labels = get_state_labels(object))
       )
     )
