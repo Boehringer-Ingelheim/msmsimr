@@ -1,12 +1,12 @@
-#' @title The simmsm package
+#' @title The msmsimr package
 #'
 #' @description ...
 #'
 #' @importFrom rlang .data
 #'
 #' @docType package
-#' @name simmsm-package
-#' @aliases simmsm
+#' @name msmsimr-package
+#' @aliases msmsimr
 NULL
 
 # just for not getting RCMD CHECK warnings about undefined.
