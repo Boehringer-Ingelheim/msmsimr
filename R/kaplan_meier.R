@@ -1,3 +1,13 @@
+#' @title Kaplan-Meier estimator of time-to-first-event
+#'
+#' @description ...
+#'
+#' @template msm
+#' @template from
+#' @template to
+#' @template data
+#' @param tidy logical, if true data is returned as `[tibble::tibble]`
+#'
 #' @export
 kaplan_meier <- function(msm, from, to, data = simulate(msm), tidy = TRUE) {
   f <- function(to_, Tstart, Tstop, duration, status) {

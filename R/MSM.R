@@ -8,7 +8,9 @@
 #'  distributions are mapped to transitions using the indices specified
 #'  in the transition matrix `tmat`
 #' @param tmat transition matrix for the multi-state model
-#' @param tmax maximal time when simulating from model
+#' @template tmax
+#' @param m TODO: rename to nsim positive integer, default number of samples
+#' @template grid_size
 #'
 #' @seealso [as_TransitionMatrix()] [survival-distribution]
 #'

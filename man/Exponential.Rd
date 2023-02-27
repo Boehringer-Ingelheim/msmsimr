@@ -8,9 +8,13 @@ Exponential(lambda, optimize = FALSE)
 }
 \arguments{
 \item{lambda}{rate}
+
+\item{optimize}{logical, set to \code{TRUE} to make rate tunable during
+optimization}
 }
 \value{
-A \href{survival-distribution}{survival distribution} of class \code{Exponential}.
+A \href{survival-distribution}{survival distribution} of class
+\code{Exponential}.
 }
 \description{
 description

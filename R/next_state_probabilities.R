@@ -1,3 +1,11 @@
+#' @title Compute sample-based next-state probabilities
+#'
+#' @description ...
+#'
+#' @template msm
+#' @template data
+#' @param as_matrix logical, return as matrix?
+#'
 #' @export
 next_state_probabilities <- function(msm, data = simulate(msm), as_matrix = FALSE) {
   state_labels <- get_state_labels(msm)

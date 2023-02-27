@@ -28,7 +28,12 @@ in the transition matrix \code{tmat}}
 
 \item{tmat}{transition matrix for the multi-state model}
 
-\item{tmax}{maximal time when simulating from model}
+\item{tmax}{numeric, maximal time when simulating from model}
+
+\item{m}{TODO: rename to nsim positive integer, default number of samples}
+
+\item{grid_size}{integer, number of grid points to use when calculating the
+cumulative hazard grid for simulation}
 
 \item{msm}{a \code{MSM} multi-state object}
 

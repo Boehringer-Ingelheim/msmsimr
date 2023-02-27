@@ -1,3 +1,10 @@
+#' @title Censor multi-state data set
+#'
+#' @description Restrict multi-state data set to given time point.
+#'
+#' @template data
+#' @param t positive numerical, global maximal censoring time point
+#'
 #' @export
 censor <- function(data, t = Inf) {
   checkmate::assert_data_frame(data, min.rows = 1L)

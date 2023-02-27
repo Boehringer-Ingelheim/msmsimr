@@ -29,6 +29,10 @@ cumulative_hazard <- function(t, dst) {
   UseMethod("cumulative_hazard", object = dst)
 }
 
+#' @title Convert object to numeric vector
+#'
+#' @param x object to convert
+#'
 #' @export
 to_vector <- function(x) {
   UseMethod("to_vector", object = x)
@@ -53,8 +57,11 @@ to_vector.default <- function(x) {
 #' @description description
 #'
 #' @param lambda rate
+#' @param optimize logical, set to `TRUE` to make rate tunable during
+#' optimization
 #'
-#' @return A [survival distribution](survival-distribution) of class `Exponential`.
+#' @return A [survival distribution](survival-distribution) of class
+#' `Exponential`.
 #'
 #' @seealso [survival-distribution]
 #' @family survival distributions

@@ -7,6 +7,14 @@ mstate_mssample_wrapper <- function(id, Haz, tmat) {
   return(tibble::as_tibble(res))
 }
 
+#' @title Transition probability for approximate likelihood inference
+#'
+#' @template from
+#' @param to character, target state
+#' @param probability numeric vector of transition probability
+#' @param standard_error numeric vector of standard errors for transition
+#'   probabilities
+#'
 #' @export
 calibration_probability <- function(from, to, probability, standard_error) {
   structure(list(
@@ -19,8 +27,17 @@ calibration_probability <- function(from, to, probability, standard_error) {
   )
 }
 
+#' @title Survival curve for approximate likelihood inference
+#'
+#' @template from
+#' @template to
+#' @param time numeric vector of times
+#' @param survival numeric vector of survival proportions at `time`
+#' @param standard_error numeric vector of standard errors for survival
+#'   proportions
+#'
 #' @export
-calibration_survival_curve <- function(from, events, time, survival, standard_error) {
+calibration_survival_curve <- function(from, to, time, survival, standard_error) {
   structure(tibble::tibble(
       time = time,
       survival = survival,
@@ -28,6 +45,6 @@ calibration_survival_curve <- function(from, events, time, survival, standard_er
     ),
     class = c("CalibrationSurvivalCurve", class(tibble::tibble())),
     from = from,
-    events = events
+    to = to
   )
 }

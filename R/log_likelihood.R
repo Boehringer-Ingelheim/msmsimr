@@ -1,4 +1,16 @@
-#'@export
+#' @title Sample-based log-likelihood for summary data
+#'
+#' @description ...
+#'
+#' @template msm
+#' @template tmax
+#' @template grid_size
+#' @template nsim
+#' @template hazard_ratios
+#' @template seed
+#' @param ... a list of calibration objects TODO: explain
+#'
+#' @export
 log_likelihood <- function(
   msm,
   ...,
@@ -36,7 +48,7 @@ log_likelihood <- function(
     for (i in seq_along(curves)) {
       curve <- curves[[i]]
       from <- attr(curve, "from")
-      to <- attr(curve, "events")
+      to <- attr(curve, "to")
       tbl_curves <- dplyr::bind_rows(
         tbl_curves,
         tibble::tibble(
