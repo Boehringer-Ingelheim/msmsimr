@@ -1,4 +1,4 @@
-mstate_mssample_wrapper <- function(id, Haz, tmat) {
+mstate_mssample_wrapper <- function(id, Haz, tmat) { #nolint
   m <- length(id)
   res <- mstate::mssample(Haz, tmat, M = m, output = "data",
     clock = "reset", tvec = NULL)
@@ -37,7 +37,9 @@ calibration_probability <- function(from, to, probability, standard_error) {
 #'   proportions
 #'
 #' @export
-calibration_survival_curve <- function(from, to, time, survival, standard_error) {
+calibration_survival_curve <- function(
+    from, to, time, survival, standard_error
+) {
   structure(tibble::tibble(
       time = time,
       survival = survival,

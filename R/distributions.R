@@ -67,7 +67,7 @@ to_vector.default <- function(x) {
 #' @family survival distributions
 #'
 #' @export
-Exponential <- function(lambda, optimize = FALSE) {
+Exponential <- function(lambda, optimize = FALSE) { # nolint
   checkmate::assert_numeric(
     lambda, finite = TRUE, any.missing = FALSE, len = 1L, null.ok = FALSE,
     lower = sqrt(.Machine$double.eps)
@@ -86,5 +86,5 @@ cumulative_hazard.Exponential <- function(t, dst) {
     t, finite = TRUE, any.missing = FALSE, min.len = 1L, null.ok = FALSE,
     lower = 0
   )
-  return(exp(dst$log_lambda)*t)
+  return(exp(dst$log_lambda) * t)
 }

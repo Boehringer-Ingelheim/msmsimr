@@ -9,11 +9,11 @@ vignette: >
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(
-  eval = FALSE,
+  # eval = FALSE, # nolint
   collapse = TRUE,
   comment = "#>",
   fig.width = 7,
-  fig.height = 7/1.61,
+  fig.height = 7 / 1.61,
   fig.align = "center"
 )
 ```
@@ -25,28 +25,10 @@ library(tidyverse, warn.conflicts = TRUE)
 library(future)
 plan(multisession)
 
-library(simmsm)
+library(msmsimr)
 ```
 
-Oncology studies often employ surrogate endpoints such as the response rate
-or progression free survival at interim analyses to drive
-
-1. futility stopping
-2. requesting accelerated approval.
-
-In a confirmatory setting this often requires alpha allocation to the different
-endpoints of interest to maintain strict control of the maximal type one error
-rate.
-
-The optimal multiple-testing strategy, the timing of interim analyses,
-and futility stopping boundaries depend both on the study objectives and 
-the complex relationship between response, progression, and death.
-
-Simulating detailed patient-level data thus allows to investigate operating
-characteristics in more detail and can drive smart risk taking.
-
-One class of models proposed in this context are multi-state survival models (MSM).
-Consider, for instance, the following MSM.
+Work In Progress!
 
 ```{r, echo=FALSE}
 nomnoml::nomnoml(
@@ -79,22 +61,23 @@ tmat <- as_TransitionMatrix(
     NA, NA,  3, NA,
     NA, NA, NA,  4,
     NA, NA, NA, NA
-  ), nrow = 4, byrow = TRUE), 
+  ), nrow = 4, byrow = TRUE),
   state_labels = c("start", "response", "progression", "death")
 )
 tmat
 
 msm <- MSM(
-  Exponential(log(2)/3),
-  Exponential(log(2)/6),
-  Exponential(log(2)/12),
-  Exponential(log(2)/3),
+  Exponential(log(2) / 3),
+  Exponential(log(2) / 6),
+  Exponential(log(2) / 12),
+  Exponential(log(2) / 3),
   tmat = tmat,
   tmax = 60
 )
 ```
 
 It is then possible to simulate trajectories from the model
+
 ```{r}
 tbl_data <- simulate(msm, nsim = 200)
 tbl_data
@@ -110,7 +93,8 @@ plot_model <- function(data) {
   title("response")
   plot(kaplan_meier(msm, "progression", "death", data, FALSE), xlim = c(0, 36))
   title("progression->death")
-  plot(kaplan_meier(msm, "start", c("progression", "death"), data, FALSE), xlim = c(0, 36))
+  plot(kaplan_meier(msm, "start", c("progression", "death"), data, FALSE),
+    xlim = c(0, 36))
   title("PFS")
   plot(kaplan_meier(msm, "start", "death", data, FALSE), xlim = c(0, 36))
   title("OS")
@@ -147,11 +131,8 @@ tbl_data <- simulate(msm, nsim = 200, hazard_ratios = hrvec)
 plot_model(tbl_data)
 ```
 
-In practice, it is often difficult to
-access suitable individual-level data to estimate the parameters for a planned
-control group directly.
-An alternative are response probabilities and Kaplan-Meier plots
-of PFS and OS published in the literature.
+An alternative to individual-level data for fitting a MSM are response
+probabilities and Kaplan-Meier plots of PFS and OS published in the literature.
 
 Consider the following data that was generated from the model above and could
 have been extracted from a research article.
@@ -160,6 +141,8 @@ have been extracted from a research article.
 data("example_calibration_data")
 example_calibration_data
 ```
+
+TODO: unnecessarily complex, remove
 
 The data can be parsed in 'calibration objects' to calculate an approximate
 likelihood under a set of model parameters.
@@ -175,7 +158,8 @@ cal1 <- with(example_calibration_data,
   )
 cal2 <- with(example_calibration_data$tbl_km_pfs,
     calibration_survival_curve(
-      "start", c("progression", "death"), time = t, survival = est, standard_error = se
+      "start", c("progression", "death"), time = t, survival = est,
+      standard_error = se
     )
   )
 cal3 <- with(example_calibration_data$tbl_km_os,
@@ -188,7 +172,7 @@ cal3 <- with(example_calibration_data$tbl_km_os,
 ```{r}
 lls <- purrr::map_dbl(1:5, ~log_likelihood(msm, cal1, cal2, cal3))
 mean(lls)
-sd(lls)/sqrt(5) # not ideal - quite variable; bump nsim? needs to be a lot faster
+sd(lls) / sqrt(5) # not ideal - quite variable; bump nsim? needs to be faster
 ```
 
 This approximate likelihood can be optimized.
@@ -203,10 +187,10 @@ transitions fixed to make this identifiable.
 to_vector(msm)
 
 msm2 <- MSM(
-  Exponential(log(2)/12, optimize = TRUE),
-  Exponential(log(2)/12, optimize = TRUE),
-  Exponential(log(2)/12),
-  Exponential(log(2)/3),
+  Exponential(log(2) / 12, optimize = TRUE),
+  Exponential(log(2) / 12, optimize = TRUE),
+  Exponential(log(2) / 12),
+  Exponential(log(2) / 3),
   tmat = tmat,
   tmax = 60
 )
@@ -230,7 +214,7 @@ negative_log_likelihood <- function(x) { # minimization - multiply with -1
 }
 
 # the gradient is super expensive with more parameters
-gradient <- function(x, eps = 0.1) { # use relative large eps to make robust vs noise
+gradient <- function(x, eps = 0.1) { # use relative large eps to make robust
   numDeriv::grad(negative_log_likelihood,
     x, method = "simple", method.args = list(eps = eps))
 }
@@ -252,19 +236,19 @@ Plot starting values.
 ```{r}
 plot_pfs_os <- function(msm1, data1, msm2, data2) {
   tbl <- bind_rows(
-    kaplan_meier(msm1, "start", c("progression", "death"), data = data1) %>% 
+    kaplan_meier(msm1, "start", c("progression", "death"), data = data1) %>%
       mutate(model = "A", endpoint = "PFS"),
-    kaplan_meier(msm2, "start", c("progression", "death"), data = data2) %>% 
+    kaplan_meier(msm2, "start", c("progression", "death"), data = data2) %>%
       mutate(model = "B", endpoint = "PFS"),
-    kaplan_meier(msm1, "start", "death", data = data1) %>% 
+    kaplan_meier(msm1, "start", "death", data = data1) %>%
       mutate(model = "A", endpoint = "OS"),
-    kaplan_meier(msm2, "start", "death", data = data2) %>% 
+    kaplan_meier(msm2, "start", "death", data = data2) %>%
       mutate(model = "B", endpoint = "OS")
   )
   ggplot(tbl) +
     aes(time) +
     geom_step(aes(y = estimate, color = model)) +
-    facet_wrap(~endpoint) 
+    facet_wrap(~endpoint)
 }
 
 data_fix <- simulate(msm)
@@ -284,7 +268,7 @@ res <- simmsm:::gradient_descent(
   negative_log_likelihood,
   gradient,
   init = initial_values,
-  rate = 1/10,
+  rate = 1 / 10,
   niter = 20
 )
 
@@ -318,3 +302,5 @@ ToDo:
 3. Speed up mstate::mssample in C++
 4. Can we get an approximate Hessian? Yes, too expensive / unprecise?
 5. Explain how an extended MSM can be used to simulate under transition specific censoring.
+6. Use reparametrization trick for efficient maximum likelihood? 
+https://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html

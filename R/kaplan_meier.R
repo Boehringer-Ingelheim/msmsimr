@@ -10,7 +10,7 @@
 #'
 #' @export
 kaplan_meier <- function(msm, from, to, data = simulate(msm), tidy = TRUE) {
-  f <- function(to_, Tstart, Tstop, duration, status) {
+  f <- function(to_, Tstart, Tstop, duration, status) { # nolint
     idx <- which(to_ %in% to & status == 1)
     if (length(idx) == 0) {
       idx <- length(to)
@@ -27,7 +27,9 @@ kaplan_meier <- function(msm, from, to, data = simulate(msm), tidy = TRUE) {
     ))
   }
   km_data <- data %>%
-    dplyr::filter(as.integer(.data$from) >= which(get_state_labels(msm) == !!from)) %>%
+    dplyr::filter(
+      as.integer(.data$from) >= which(get_state_labels(msm) == !!from)
+    ) %>%
     dplyr::group_by(.data$id) %>%
     dplyr::summarize(
       res = f(.data$to, .data$Tstart, .data$Tstop, .data$duration, .data$status)

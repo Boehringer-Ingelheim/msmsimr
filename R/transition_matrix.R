@@ -13,7 +13,7 @@
 #' @return A matrix of class `TransitionMatrix`.
 #'
 #' @export
-as_TransitionMatrix <- function(tmat, state_labels = colnames(tmat)) {
+as_TransitionMatrix <- function(tmat, state_labels = colnames(tmat)) { # nolint
   checkmate::assert_matrix(tmat, mode = "integerish", all.missing = FALSE,
     nrows = ncol(tmat), null.ok = FALSE)
   t_ids <- as.vector(tmat)

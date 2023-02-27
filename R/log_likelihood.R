@@ -41,7 +41,9 @@ log_likelihood <- function(
         by = c("from", "to")
       ) %>%
       dplyr::filter(stats::complete.cases(.)) %>%
-      dplyr::mutate(z = (.data$probability.x - .data$probability.y) / .data$standard_error)
+      dplyr::mutate(
+        z = (.data$probability.x - .data$probability.y) / .data$standard_error
+      )
   }
   if (length(curves) > 0) { # compare survival curves
     tbl_curves <- tibble::tibble()
@@ -53,7 +55,8 @@ log_likelihood <- function(
         tbl_curves,
         tibble::tibble(
           to = paste(to, collapse = ", "),
-          survfit = survival(msm, curve$time, from = from, to = to, data = data),
+          survfit = survival(msm, curve$time, from = from, to = to,
+            data = data),
           surv = curve$survival,
           se = curve$standard_error,
           z = (.data$survfit - .data$surv) / .data$se,

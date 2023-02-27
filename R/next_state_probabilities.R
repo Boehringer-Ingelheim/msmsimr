@@ -7,7 +7,9 @@
 #' @param as_matrix logical, return as matrix?
 #'
 #' @export
-next_state_probabilities <- function(msm, data = simulate(msm), as_matrix = FALSE) {
+next_state_probabilities <- function(msm, data = simulate(msm),
+  as_matrix = FALSE
+) {
   state_labels <- get_state_labels(msm)
   res <- data %>%
     # add one artificial transition to make all levels appear
@@ -31,7 +33,9 @@ next_state_probabilities <- function(msm, data = simulate(msm), as_matrix = FALS
     dplyr::ungroup()
   if (as_matrix) {
     res <- res %>%
-      tidyr::pivot_wider(names_from = .data$to, values_from = .data$probability) %>%
+      tidyr::pivot_wider(
+        names_from = .data$to, values_from = .data$probability
+      ) %>%
       tibble::column_to_rownames("from") %>%
       as.matrix()
     # rearrange

@@ -2,7 +2,7 @@ gradient_descent <- function(fn, gr, init, rate, niter) {
   x <- matrix(NA_real_, nrow = niter + 1, ncol = length(init), byrow = TRUE)
   vals <- numeric(niter + 1)
   x[1, ] <- init
-  vals[1] <- fn(init) # can make this more efficient by reusing function evaluations
+  vals[1] <- fn(init) # make this more efficient by reusing function evaluations
   for (i in 1:niter) {
     cat("current location:\n\r")
     cat(round(x[i, ], 3), vals[i])

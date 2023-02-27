@@ -15,10 +15,11 @@
 #' @seealso [as_TransitionMatrix()] [survival-distribution]
 #'
 #' @export
-MSM <- function(..., tmat, tmax = NULL, m = 2^11, grid_size = 500) {
+MSM <- function(..., tmat, tmax = NULL, m = 2^11, grid_size = 500) { # nolint
   transition_distributions <- list(...)
   for (i in seq_along(transition_distributions)) {
-    checkmate::assert_class(transition_distributions[[i]], "SurvivalDistribution")
+    checkmate::assert_class(transition_distributions[[i]],
+      "SurvivalDistribution")
   }
   checkmate::assert_class(tmat, "TransitionMatrix")
   res <- structure(
@@ -86,7 +87,7 @@ get_transition_distribution <- function(msm, index) {
 
 
 #' @export
-to_vector.MSM <- function(x) {
+to_vector.MSM <- function(x) { # nolint
   do.call(c, lapply(x, to_vector))
 }
 
@@ -147,7 +148,8 @@ simulate.MSM <- function(
         ) * hazard_ratios[.data$trans[1]]
     ) %>%
     dplyr::ungroup()
-  # sample; c++ implementation of https://doi.org/10.1002/sim.3305 might be quicker
+  # sample; c++ implementation of https://doi.org/10.1002/sim.3305
+  # might be quicker
   res <- tibble::tibble(
       id = 1:nsim
     ) %>%
@@ -174,7 +176,8 @@ simulate.MSM <- function(
     dplyr::mutate(
       dplyr::across(
         c(.data$from, .data$to),
-        ~factor(., levels = seq_along(object), labels = get_state_labels(object))
+        ~factor(., levels = seq_along(object),
+          labels = get_state_labels(object))
       )
     )
 }
