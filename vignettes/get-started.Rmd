@@ -304,3 +304,5 @@ ToDo:
 5. Explain how an extended MSM can be used to simulate under transition specific censoring.
 6. Use reparametrization trick for efficient maximum likelihood? 
 https://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html
+7. Alternatively, one could consider piece wise constant hazards - see https://arxiv.org/pdf/2211.03214v1.pdf. Should lead to a tractable likelihood but
+no longer allows to fit transitions independently.
