@@ -31,7 +31,8 @@ Imports:
     broom,
     furrr,
     purrr,
-    survival
+    survival,
+    numDeriv
 Suggests: 
     knitr,
     rmarkdown,
