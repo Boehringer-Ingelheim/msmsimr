@@ -31,15 +31,15 @@ Imports:
     broom,
     furrr,
     purrr,
-    survival,
-    numDeriv
+    survival
 Suggests: 
     knitr,
     rmarkdown,
     ggplot2,
     nomnoml,
     tidyverse,
-    future
+    future,
+    numDeriv
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)

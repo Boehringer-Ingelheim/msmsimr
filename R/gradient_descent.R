@@ -1,7 +1,7 @@
 #' @title Gradient descent
 #'
 #' @param fn function to optimize
-#' @param gn gradient
+#' @param gr gradient
 #' @param init initial parameter variables
 #' @param rate learning rate
 #' @param niter number of iteration
