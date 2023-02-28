@@ -78,8 +78,8 @@
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">msmsimr</span><span class="op">)</span></span></code></pre></div>
 <p>Work In Progress!</p>
-<div id="htmlwidget-364f495f89a88cb6bdfe" style="width:700px;height:200px;" class="nomnoml html-widget "></div>
-<script type="application/json" data-for="htmlwidget-364f495f89a88cb6bdfe">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n[<state>start]\n[start]-[<note>1]\n[1]->[<state>response]\n[start]-[<note>2]\n[2]->[<state>progression]\n[response]-[<note>3]\n[3]->[progression]\n[progression]-[<note>4]\n[4]->[<state>death]","svg":false,"png":null},"evals":[],"jsHooks":[]}</script><p>This model contains all states relevant to response rate, PFS, OS
+<div id="htmlwidget-96e28d6fcf770e25f110" style="width:700px;height:200px;" class="nomnoml html-widget "></div>
+<script type="application/json" data-for="htmlwidget-96e28d6fcf770e25f110">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n[<state>start]\n[start]-[<note>1]\n[1]->[<state>response]\n[start]-[<note>2]\n[2]->[<state>progression]\n[response]-[<note>3]\n[3]->[progression]\n[progression]-[<note>4]\n[4]->[<state>death]","svg":false,"png":null},"evals":[],"jsHooks":[]}</script><p>This model contains all states relevant to response rate, PFS, OS
 (and duration of response). Assuming a low rate of direct transitions
 from start/response to death, the model does not include direct
 transitions from start/response to death to reduce complexity.</p>
@@ -117,20 +117,20 @@ heuristically.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span><span class="va">msm</span>, nsim <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="va">tbl_data</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 513 × 8</span></span></span>
-<span><span class="co">#&gt;    id    Tstart  Tstop duration from        to          status trans</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2      0      3.97     3.97  start       response         1     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2      3.97  13.1      9.14  response    progression      1     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 2     13.1   16.0      2.89  progression death            1     4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 4      0      0.962    0.962 start       response         1     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 4      0.962 24.2     23.2   response    progression      1     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 4     24.2   36.2     12.0   progression death            1     4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 6      0      2.89     2.89  start       response         1     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 6      2.89  25.6     22.7   response    progression      1     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 6     25.6   27.3      1.68  progression death            1     4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 8      0     13.3     13.3   start       progression      1     2</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 503 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 517 × 8</span></span></span>
+<span><span class="co">#&gt;    id    Tstart Tstop duration from        to          status trans</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2       0    14.3    14.3   start       progression      1     2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2      14.3  16.5     2.16  progression death            1     4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 4       0     5.17    5.17  start       response         1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 4       5.17  6.85    1.68  response    progression      1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 4       6.85  8.90    2.04  progression death            1     4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 6       0     1.92    1.92  start       response         1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 6       1.92 13.7    11.8   response    progression      1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 6      13.7  14.3     0.601 progression death            1     4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 8       0     3.13    3.13  start       response         1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 8       3.13  9.14    6.01  response    progression      1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 507 more rows</span></span></span></code></pre></div>
 <p>These can be used to estimate time-to-first event for single or
 compound endpoints.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -153,7 +153,7 @@ compound endpoints.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/next_state_probabilities.html">next_state_probabilities</a></span><span class="op">(</span><span class="va">msm</span>, <span class="va">tbl_data</span>, as_matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             start response progression death</span></span>
-<span><span class="co">#&gt; start           0    0.605       0.395     0</span></span>
+<span><span class="co">#&gt; start           0    0.645       0.355     0</span></span>
 <span><span class="co">#&gt; response        0    0.000       1.000     0</span></span>
 <span><span class="co">#&gt; progression     0    0.000       0.000     1</span></span>
 <span><span class="co">#&gt; death           0    0.000       0.000     0</span></span></code></pre></div>
@@ -242,9 +242,9 @@ t-distributed.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lls</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dbl</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">~</span><span class="fu"><a href="../reference/log_likelihood.html">log_likelihood</a></span><span class="op">(</span><span class="va">msm</span>, <span class="va">cal1</span>, <span class="va">cal2</span>, <span class="va">cal3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lls</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] -7.167642</span></span>
+<span><span class="co">#&gt; [1] -7.288277</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">lls</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="co"># not ideal - quite variable; bump nsim? needs to be faster</span></span>
-<span><span class="co">#&gt; [1] 0.004138826</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.007826921</span></span></code></pre></div>
 <p>This approximate likelihood can be optimized.</p>
 <p>First, need to make parameters tunable. PFS/OS and response rate
 alone are insufficient to identify all transitions, so assuming we have
@@ -656,6 +656,10 @@ unprecise?</li>
 specific censoring.</li>
 <li>Use reparametrization trick for efficient maximum likelihood? <a href="https://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html" class="external-link uri">https://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html</a>
 </li>
+<li>Alternatively, one could consider piece wise constant hazards - see
+<a href="https://arxiv.org/pdf/2211.03214v1.pdf" class="external-link uri">https://arxiv.org/pdf/2211.03214v1.pdf</a>. Should lead to a
+tractable likelihood but no longer allows to fit transitions
+independently.</li>
 </ol></main>
 </div>
 
