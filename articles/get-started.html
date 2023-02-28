@@ -58,8 +58,7 @@
 
 
 
-
-<div class="row">
+<script src="get-started_files/htmlwidgets-1.6.1/htmlwidgets.js"></script><script src="get-started_files/es6shim-0.35.6/es6shim.js"></script><script src="get-started_files/es7shim-6.0.0/es7shim.js"></script><script src="get-started_files/graphre-0.1.3/graphre.js"></script><script src="get-started_files/nomnoml-1.4.0/nomnoml.js"></script><script src="get-started_files/nomnoml-binding-0.2.5/nomnoml.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>get-started</h1>
             
@@ -77,27 +76,10 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
 <span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">simmsm</span><span class="op">)</span></span></code></pre></div>
-<p>Oncology studies often employ surrogate endpoints such as the
-response rate or progression free survival at interim analyses to
-drive</p>
-<ol style="list-style-type: decimal">
-<li>futility stopping</li>
-<li>requesting accelerated approval.</li>
-</ol>
-<p>In a confirmatory setting this often requires alpha allocation to the
-different endpoints of interest to maintain strict control of the
-maximal type one error rate.</p>
-<p>The optimal multiple-testing strategy, the timing of interim
-analyses, and futility stopping boundaries depend both on the study
-objectives and the complex relationship between response, progression,
-and death.</p>
-<p>Simulating detailed patient-level data thus allows to investigate
-operating characteristics in more detail and can drive smart risk
-taking.</p>
-<p>One class of models proposed in this context are multi-state survival
-models (MSM). Consider, for instance, the following MSM.</p>
-<p>This model contains all states relevant to response rate, PFS, OS
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">msmsimr</span><span class="op">)</span></span></code></pre></div>
+<p>Work In Progress!</p>
+<div id="htmlwidget-885a30f2a0cb4b672ce3" style="width:700px;height:200px;" class="nomnoml html-widget "></div>
+<script type="application/json" data-for="htmlwidget-885a30f2a0cb4b672ce3">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n[<state>start]\n[start]-[<note>1]\n[1]->[<state>response]\n[start]-[<note>2]\n[2]->[<state>progression]\n[response]-[<note>3]\n[3]->[progression]\n[progression]-[<note>4]\n[4]->[<state>death]","svg":false,"png":null},"evals":[],"jsHooks":[]}</script><p>This model contains all states relevant to response rate, PFS, OS
 (and duration of response). Assuming a low rate of direct transitions
 from start/response to death, the model does not include direct
 transitions from start/response to death to reduce complexity.</p>
@@ -111,23 +93,44 @@ heuristically.</p>
 <span>    <span class="cn">NA</span>, <span class="cn">NA</span>,  <span class="fl">3</span>, <span class="cn">NA</span>,</span>
 <span>    <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>,  <span class="fl">4</span>,</span>
 <span>    <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span></span>
-<span>  <span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, </span>
+<span>  <span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  state_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"start"</span>, <span class="st">"response"</span>, <span class="st">"progression"</span>, <span class="st">"death"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">tmat</span></span>
+<span><span class="co">#&gt;             start response progression death</span></span>
+<span><span class="co">#&gt; start          NA        1           2    NA</span></span>
+<span><span class="co">#&gt; response       NA       NA           3    NA</span></span>
+<span><span class="co">#&gt; progression    NA       NA          NA     4</span></span>
+<span><span class="co">#&gt; death          NA       NA          NA    NA</span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "TransitionMatrix"</span></span>
 <span></span>
 <span><span class="va">msm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MSM.html">MSM</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">6</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">12</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">6</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">12</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  tmat <span class="op">=</span> <span class="va">tmat</span>,</span>
 <span>  tmax <span class="op">=</span> <span class="fl">60</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>It is then possible to simulate trajectories from the model</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span><span class="va">msm</span>, nsim <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
-<span><span class="va">tbl_data</span></span></code></pre></div>
+<span><span class="va">tbl_data</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 521 × 8</span></span></span>
+<span><span class="co">#&gt;    id    Tstart  Tstop duration from        to          status trans</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2      0      0.721    0.721 start       response         1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2      0.721  4.21     3.49  response    progression      1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 2      4.21   4.93     0.721 progression death            1     4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 4      0      0.721    0.721 start       response         1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 4      0.721 17.8     17.1   response    progression      1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 4     17.8   31.6     13.8   progression death            1     4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 6      0      9.86     9.86  start       progression      1     2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 6      9.86  14.3      4.45  progression death            1     4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 8      0      1.20     1.20  start       response         1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 8      1.20   3.25     2.04  response    progression      1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 511 more rows</span></span></span></code></pre></div>
 <p>These can be used to estimate time-to-first event for single or
 compound endpoints.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -137,16 +140,23 @@ compound endpoints.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"response"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm</span>, <span class="st">"progression"</span>, <span class="st">"death"</span>, <span class="va">data</span>, <span class="cn">FALSE</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"progression-&gt;death"</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm</span>, <span class="st">"start"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"progression"</span>, <span class="st">"death"</span><span class="op">)</span>, <span class="va">data</span>, <span class="cn">FALSE</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm</span>, <span class="st">"start"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"progression"</span>, <span class="st">"death"</span><span class="op">)</span>, <span class="va">data</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>    xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"PFS"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm</span>, <span class="st">"start"</span>, <span class="st">"death"</span>, <span class="va">data</span>, <span class="cn">FALSE</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"OS"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_pars</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu">plot_model</span><span class="op">(</span><span class="va">tbl_data</span><span class="op">)</span></span></code></pre></div>
+<p><img src="get-started_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>The same data can be used to estimate next state probabilities.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/next_state_probabilities.html">next_state_probabilities</a></span><span class="op">(</span><span class="va">msm</span>, <span class="va">tbl_data</span>, as_matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/next_state_probabilities.html">next_state_probabilities</a></span><span class="op">(</span><span class="va">msm</span>, <span class="va">tbl_data</span>, as_matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             start response progression death</span></span>
+<span><span class="co">#&gt; start           0    0.635       0.365     0</span></span>
+<span><span class="co">#&gt; response        0    0.000       1.000     0</span></span>
+<span><span class="co">#&gt; progression     0    0.000       0.000     1</span></span>
+<span><span class="co">#&gt; death           0    0.000       0.000     0</span></span></code></pre></div>
 <p>Assumptions about treatment effects can be incorporated by modifying
 the cumulative transition hazards of the model.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -156,6 +166,13 @@ the cumulative transition hazards of the model.</p>
 <span><span class="va">hrmat</span><span class="op">[</span><span class="st">"response"</span>, <span class="st">"progression"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">.5</span></span>
 <span><span class="va">hrmat</span><span class="op">[</span><span class="st">"progression"</span>, <span class="st">"death"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">.6</span></span>
 <span><span class="va">hrmat</span></span>
+<span><span class="co">#&gt;             start response progression death</span></span>
+<span><span class="co">#&gt; start          NA        1         0.6    NA</span></span>
+<span><span class="co">#&gt; response       NA       NA         0.5    NA</span></span>
+<span><span class="co">#&gt; progression    NA       NA          NA   0.6</span></span>
+<span><span class="co">#&gt; death          NA       NA          NA    NA</span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "TransitionMatrix"</span></span>
 <span></span>
 <span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">tmat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="va">idx</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">tmat</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
@@ -164,15 +181,42 @@ the cumulative transition hazards of the model.</p>
 <code class="sourceCode R"><span><span class="va">tbl_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span><span class="va">msm</span>, nsim <span class="op">=</span> <span class="fl">200</span>, hazard_ratios <span class="op">=</span> <span class="va">hrvec</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">plot_model</span><span class="op">(</span><span class="va">tbl_data</span><span class="op">)</span></span></code></pre></div>
-<p>In practice, it is often difficult to access suitable
-individual-level data to estimate the parameters for a planned control
-group directly. An alternative are response probabilities and
-Kaplan-Meier plots of PFS and OS published in the literature.</p>
+<p><img src="get-started_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;"></p>
+<p>An alternative to individual-level data for fitting a MSM are
+response probabilities and Kaplan-Meier plots of PFS and OS published in
+the literature.</p>
 <p>Consider the following data that was generated from the model above
 and could have been extracted from a research article.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_calibration_data"</span><span class="op">)</span></span>
-<span><span class="va">example_calibration_data</span></span></code></pre></div>
+<span><span class="va">example_calibration_data</span></span>
+<span><span class="co">#&gt; $pr_start_response</span></span>
+<span><span class="co">#&gt; [1] 0.6757812</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $pr_start_response_se</span></span>
+<span><span class="co">#&gt; [1] 0.075</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $tbl_km_pfs</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
+<span><span class="co">#&gt;       t   est     se</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0 1     1     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     3 0.731 0.027<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     6 0.582 0.038<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    12 0.392 0.055<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    24 0.173 0.098<span style="text-decoration: underline;">1</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $tbl_km_os</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
+<span><span class="co">#&gt;       t   est     se</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0 1     1     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     3 0.927 0.012<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     6 0.793 0.022<span style="text-decoration: underline;">8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    12 0.544 0.041<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    24 0.238 0.080<span style="text-decoration: underline;">3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    36 0.127 0.118</span></span></code></pre></div>
+<p>TODO: unnecessarily complex, remove</p>
 <p>The data can be parsed in ‘calibration objects’ to calculate an
 approximate likelihood under a set of model parameters. The likelihood
 is constructed assuming that the standardized difference in between the
@@ -186,7 +230,8 @@ t-distributed.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="va">cal2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">example_calibration_data</span><span class="op">$</span><span class="va">tbl_km_pfs</span>,</span>
 <span>    <span class="fu"><a href="../reference/calibration_survival_curve.html">calibration_survival_curve</a></span><span class="op">(</span></span>
-<span>      <span class="st">"start"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"progression"</span>, <span class="st">"death"</span><span class="op">)</span>, time <span class="op">=</span> <span class="va">t</span>, survival <span class="op">=</span> <span class="va">est</span>, standard_error <span class="op">=</span> <span class="va">se</span></span>
+<span>      <span class="st">"start"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"progression"</span>, <span class="st">"death"</span><span class="op">)</span>, time <span class="op">=</span> <span class="va">t</span>, survival <span class="op">=</span> <span class="va">est</span>,</span>
+<span>      standard_error <span class="op">=</span> <span class="va">se</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">cal3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">example_calibration_data</span><span class="op">$</span><span class="va">tbl_km_os</span>,</span>
@@ -197,7 +242,9 @@ t-distributed.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lls</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dbl</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">~</span><span class="fu"><a href="../reference/log_likelihood.html">log_likelihood</a></span><span class="op">(</span><span class="va">msm</span>, <span class="va">cal1</span>, <span class="va">cal2</span>, <span class="va">cal3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lls</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">lls</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="co"># not ideal - quite variable; bump nsim? needs to be a lot faster</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] -7.252797</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">lls</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="co"># not ideal - quite variable; bump nsim? needs to be faster</span></span>
+<span><span class="co">#&gt; [1] 0.002091821</span></span></code></pre></div>
 <p>This approximate likelihood can be optimized.</p>
 <p>First, need to make parameters tunable. PFS/OS and response rate
 alone are insufficient to identify all transitions, so assuming we have
@@ -207,18 +254,23 @@ transitions and the post-progression transitions fixed to make this
 identifiable.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/to_vector.html">to_vector</a></span><span class="op">(</span><span class="va">msm</span><span class="op">)</span></span>
+<span><span class="co">#&gt; numeric(0)</span></span>
 <span></span>
 <span><span class="va">msm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MSM.html">MSM</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">12</span>, optimize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">12</span>, optimize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">12</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">12</span>, optimize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">12</span>, optimize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">12</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/Exponential.html">Exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  tmat <span class="op">=</span> <span class="va">tmat</span>,</span>
 <span>  tmax <span class="op">=</span> <span class="fl">60</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/to_vector.html">to_vector</a></span><span class="op">(</span><span class="va">msm2</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/to_vector.html">to_vector</a></span><span class="op">(</span><span class="fu"><a href="../reference/MSM.html">update_parameters</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; log_lambda log_lambda </span></span>
+<span><span class="co">#&gt;   -2.85142   -2.85142</span></span>
+<span><span class="fu"><a href="../reference/to_vector.html">to_vector</a></span><span class="op">(</span><span class="fu"><a href="../reference/MSM.html">update_parameters</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; log_lambda log_lambda </span></span>
+<span><span class="co">#&gt;          1          1</span></span></code></pre></div>
 <p>We minimize the negative log likelihood. The problem is the gradient
 which can only be approximated via finite differences and sampling. This
 is slow and imprecise.</p>
@@ -232,67 +284,358 @@ is slow and imprecise.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># the gradient is super expensive with more parameters</span></span>
-<span><span class="va">gradient</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">eps</span> <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">{</span> <span class="co"># use relative large eps to make robust vs noise</span></span>
-<span>  <span class="fu">numDeriv</span><span class="fu">::</span><span class="fu">grad</span><span class="op">(</span><span class="va">negative_log_likelihood</span>,</span>
+<span><span class="va">gradient</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">eps</span> <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">{</span> <span class="co"># use relative large eps to make robust</span></span>
+<span>  <span class="fu">numDeriv</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/numDeriv/man/grad.html" class="external-link">grad</a></span><span class="op">(</span><span class="va">negative_log_likelihood</span>,</span>
 <span>    <span class="va">x</span>, method <span class="op">=</span> <span class="st">"simple"</span>, method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>eps <span class="op">=</span> <span class="va">eps</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">true_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">msm</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">true_values</span></span>
+<span><span class="co">#&gt; log_lambda log_lambda </span></span>
+<span><span class="co">#&gt;  -1.465125  -2.158272</span></span>
 <span><span class="co"># some start value</span></span>
 <span><span class="va">initial_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/to_vector.html">to_vector</a></span><span class="op">(</span><span class="va">msm2</span><span class="op">)</span></span>
 <span><span class="va">initial_values</span></span>
+<span><span class="co">#&gt; log_lambda log_lambda </span></span>
+<span><span class="co">#&gt;   -2.85142   -2.85142</span></span>
 <span><span class="co"># check objective</span></span>
 <span><span class="fu">negative_log_likelihood</span><span class="op">(</span><span class="va">initial_values</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 9.976225</span></span>
 <span><span class="fu">negative_log_likelihood</span><span class="op">(</span><span class="va">true_values</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 7.232215</span></span>
 <span><span class="co"># check initial gradient</span></span>
-<span><span class="fu">gradient</span><span class="op">(</span><span class="va">initial_values</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">gradient</span><span class="op">(</span><span class="va">initial_values</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] -0.5097374  2.0049097</span></span></code></pre></div>
 <p>Plot starting values.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_pfs_os</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">msm1</span>, <span class="va">data1</span>, <span class="va">msm2</span>, <span class="va">data2</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm1</span>, <span class="st">"start"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"progression"</span>, <span class="st">"death"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">data1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm1</span>, <span class="st">"start"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"progression"</span>, <span class="st">"death"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">data1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"A"</span>, endpoint <span class="op">=</span> <span class="st">"PFS"</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="st">"start"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"progression"</span>, <span class="st">"death"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">data2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="st">"start"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"progression"</span>, <span class="st">"death"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">data2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"B"</span>, endpoint <span class="op">=</span> <span class="st">"PFS"</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm1</span>, <span class="st">"start"</span>, <span class="st">"death"</span>, data <span class="op">=</span> <span class="va">data1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm1</span>, <span class="st">"start"</span>, <span class="st">"death"</span>, data <span class="op">=</span> <span class="va">data1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"A"</span>, endpoint <span class="op">=</span> <span class="st">"OS"</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="st">"start"</span>, <span class="st">"death"</span>, data <span class="op">=</span> <span class="va">data2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../reference/kaplan_meier.html">kaplan_meier</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="st">"start"</span>, <span class="st">"death"</span>, data <span class="op">=</span> <span class="va">data2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"B"</span>, endpoint <span class="op">=</span> <span class="st">"OS"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_step</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">estimate</span>, color <span class="op">=</span> <span class="va">model</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">endpoint</span><span class="op">)</span> </span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">endpoint</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">data_fix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span><span class="va">msm</span><span class="op">)</span></span>
 <span><span class="va">new_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span><span class="va">msm2</span><span class="op">)</span></span>
-<span><span class="fu">plot_pfs_os</span><span class="op">(</span><span class="va">msm</span>, <span class="va">data_fix</span>, <span class="va">msm2</span>, <span class="va">new_data</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/next_state_probabilities.html">next_state_probabilities</a></span><span class="op">(</span><span class="va">msm</span>, <span class="va">data_fix</span>, as_matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/next_state_probabilities.html">next_state_probabilities</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="va">new_data</span>, as_matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Try good old gradient descent first.</p>
+<span><span class="fu">plot_pfs_os</span><span class="op">(</span><span class="va">msm</span>, <span class="va">data_fix</span>, <span class="va">msm2</span>, <span class="va">new_data</span><span class="op">)</span></span></code></pre></div>
+<p><img src="get-started_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42L</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">simmsm</span><span class="fu">:::</span><span class="fu">gradient_descent</span><span class="op">(</span></span>
-<span>  <span class="va">negative_log_likelihood</span>,</span>
-<span>  <span class="va">gradient</span>,</span>
-<span>  init <span class="op">=</span> <span class="va">initial_values</span>,</span>
-<span>  rate <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">10</span>,</span>
-<span>  niter <span class="op">=</span> <span class="fl">20</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">opt</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">res</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">opt</span>, <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<p>Compare solution with ground truth.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">new_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span><span class="fu"><a href="../reference/MSM.html">update_parameters</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="va">opt</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">plot_pfs_os</span><span class="op">(</span><span class="va">msm</span>, <span class="va">data_fix</span>, <span class="va">msm2</span>, <span class="va">new_data</span><span class="op">)</span></span>
-<span></span>
+<code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/next_state_probabilities.html">next_state_probabilities</a></span><span class="op">(</span><span class="va">msm</span>, <span class="va">data_fix</span>, as_matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/next_state_probabilities.html">next_state_probabilities</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="va">new_data</span>, as_matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt;             start  response progression death</span></span>
+<span><span class="co">#&gt; start           0 0.6630859   0.3369141     0</span></span>
+<span><span class="co">#&gt; response        0 0.0000000   1.0000000     0</span></span>
+<span><span class="co">#&gt; progression     0 0.0000000   0.0000000     1</span></span>
+<span><span class="co">#&gt; death           0 0.0000000   0.0000000     0</span></span>
+<span><span class="fu"><a href="../reference/next_state_probabilities.html">next_state_probabilities</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="va">new_data</span>, as_matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             start  response progression death</span></span>
+<span><span class="co">#&gt; start           0 0.5158924   0.4841076     0</span></span>
+<span><span class="co">#&gt; response        0 0.0000000   1.0000000     0</span></span>
+<span><span class="co">#&gt; progression     0 0.0000000   0.0000000     1</span></span>
+<span><span class="co">#&gt; death           0 0.0000000   0.0000000     0</span></span></code></pre></div>
+<p>Try good old gradient descent first.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(42L)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">gradient_descent</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  negative_log_likelihood,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  gradient,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">init =</span> initial_values,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">rate =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">10</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">niter =</span> <span class="dv">20</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; current location:</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.851</span> <span class="sc">-</span><span class="fl">2.851</span> <span class="fl">9.976225</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.51</span> <span class="fl">2.005</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="fl">0.051</span> <span class="sc">-</span><span class="fl">0.2</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.8</span> <span class="sc">-</span><span class="fl">3.052</span> <span class="fl">9.807645</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">3.295</span> <span class="fl">1.901</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="fl">0.33</span> <span class="sc">-</span><span class="fl">0.19</span></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.471</span> <span class="sc">-</span><span class="fl">3.242</span> <span class="fl">8.916187</span></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a><span class="fl">0.95</span> <span class="sc">-</span><span class="fl">2.273</span></span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.095</span> <span class="fl">0.227</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.566</span> <span class="sc">-</span><span class="fl">3.015</span> <span class="fl">9.088799</span></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">3.857</span> <span class="fl">0.893</span></span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a><span class="fl">0.386</span> <span class="sc">-</span><span class="fl">0.089</span></span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.18</span> <span class="sc">-</span><span class="fl">3.104</span> <span class="fl">9.097606</span></span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a><span class="fl">1.238</span> <span class="sc">-</span><span class="fl">3.42</span></span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.124</span> <span class="fl">0.342</span></span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.304</span> <span class="sc">-</span><span class="fl">2.762</span> <span class="fl">8.712567</span></span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">3.794</span> <span class="fl">0.375</span></span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a><span class="fl">0.379</span> <span class="sc">-</span><span class="fl">0.037</span></span>
+<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.925</span> <span class="sc">-</span><span class="fl">2.799</span> <span class="fl">8.328116</span></span>
+<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span><span class="fl">1.37</span></span>
+<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.1</span> <span class="fl">0.137</span></span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.025</span> <span class="sc">-</span><span class="fl">2.662</span> <span class="fl">8.033408</span></span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a><span class="fl">0.027</span> <span class="fl">0.709</span></span>
+<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-110"><a href="#cb15-110" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-111"><a href="#cb15-111" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.003</span> <span class="sc">-</span><span class="fl">0.071</span></span>
+<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.027</span> <span class="sc">-</span><span class="fl">2.733</span> <span class="fl">8.163697</span></span>
+<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a><span class="fl">0.48</span> <span class="sc">-</span><span class="fl">0.943</span></span>
+<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.048</span> <span class="fl">0.094</span></span>
+<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.075</span> <span class="sc">-</span><span class="fl">2.639</span> <span class="fl">8.19651</span></span>
+<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.279</span> <span class="fl">0.97</span></span>
+<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a><span class="fl">0.228</span> <span class="sc">-</span><span class="fl">0.097</span></span>
+<span id="cb15-138"><a href="#cb15-138" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-139"><a href="#cb15-139" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-140"><a href="#cb15-140" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-141"><a href="#cb15-141" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.847</span> <span class="sc">-</span><span class="fl">2.736</span> <span class="fl">8.267062</span></span>
+<span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a><span class="fl">0.903</span> <span class="sc">-</span><span class="fl">2.118</span></span>
+<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-150"><a href="#cb15-150" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.09</span> <span class="fl">0.212</span></span>
+<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.938</span> <span class="sc">-</span><span class="fl">2.524</span> <span class="fl">7.896832</span></span>
+<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.924</span> <span class="fl">1.079</span></span>
+<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a><span class="fl">0.092</span> <span class="sc">-</span><span class="fl">0.108</span></span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.845</span> <span class="sc">-</span><span class="fl">2.632</span> <span class="fl">8.05167</span></span>
+<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a><span class="fl">0.075</span> <span class="sc">-</span><span class="fl">2.396</span></span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.008</span> <span class="fl">0.24</span></span>
+<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.853</span> <span class="sc">-</span><span class="fl">2.393</span> <span class="fl">7.796461</span></span>
+<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">2.737</span> <span class="fl">1.611</span></span>
+<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a><span class="fl">0.274</span> <span class="sc">-</span><span class="fl">0.161</span></span>
+<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.579</span> <span class="sc">-</span><span class="fl">2.554</span> <span class="fl">7.987396</span></span>
+<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a><span class="fl">3.473</span> <span class="sc">-</span><span class="fl">2.344</span></span>
+<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.347</span> <span class="fl">0.234</span></span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.926</span> <span class="sc">-</span><span class="fl">2.319</span> <span class="fl">8.175489</span></span>
+<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">3.409</span> <span class="fl">1.267</span></span>
+<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a><span class="fl">0.341</span> <span class="sc">-</span><span class="fl">0.127</span></span>
+<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.586</span> <span class="sc">-</span><span class="fl">2.446</span> <span class="fl">7.741133</span></span>
+<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a><span class="fl">0.406</span> <span class="sc">-</span><span class="fl">2.169</span></span>
+<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.041</span> <span class="fl">0.217</span></span>
+<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.626</span> <span class="sc">-</span><span class="fl">2.229</span> <span class="fl">7.406086</span></span>
+<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.765</span> <span class="fl">2.312</span></span>
+<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a><span class="fl">0.176</span> <span class="sc">-</span><span class="fl">0.231</span></span>
+<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.45</span> <span class="sc">-</span><span class="fl">2.46</span> <span class="fl">8.072075</span></span>
+<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a><span class="fl">2.914</span> <span class="sc">-</span><span class="fl">4.369</span></span>
+<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.291</span> <span class="fl">0.437</span></span>
+<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a>current location<span class="sc">:</span></span>
+<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.741</span> <span class="sc">-</span><span class="fl">2.024</span> <span class="fl">8.37348</span></span>
+<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a>calculating current gradient<span class="sc">:</span></span>
+<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">0.903</span> <span class="fl">6.745</span></span>
+<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a>current scaled direction<span class="sc">:</span></span>
+<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a><span class="fl">0.09</span> <span class="sc">-</span><span class="fl">0.675</span></span>
+<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a>opt <span class="ot">&lt;-</span> res[[<span class="dv">1</span>]][<span class="fu">which.min</span>(res[[<span class="dv">2</span>]]), ]</span>
+<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(opt, <span class="dv">3</span>)</span>
+<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] -1.626 -2.229</span></span></code></pre></div>
+<p>Compare solution with ground truth.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">new_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span><span class="fu"><a href="../reference/MSM.html">update_parameters</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="va">opt</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">plot_pfs_os</span><span class="op">(</span><span class="va">msm</span>, <span class="va">data_fix</span>, <span class="va">msm2</span>, <span class="va">new_data</span><span class="op">)</span></span></code></pre></div>
+<p><img src="get-started_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="../reference/next_state_probabilities.html">next_state_probabilities</a></span><span class="op">(</span><span class="va">msm</span>, <span class="va">data_fix</span>, as_matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             start  response progression death</span></span>
+<span><span class="co">#&gt; start           0 0.6630859   0.3369141     0</span></span>
+<span><span class="co">#&gt; response        0 0.0000000   1.0000000     0</span></span>
+<span><span class="co">#&gt; progression     0 0.0000000   0.0000000     1</span></span>
+<span><span class="co">#&gt; death           0 0.0000000   0.0000000     0</span></span>
+<span><span class="fu"><a href="../reference/next_state_probabilities.html">next_state_probabilities</a></span><span class="op">(</span><span class="va">msm2</span>, <span class="va">new_data</span>, as_matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             start  response progression death</span></span>
+<span><span class="co">#&gt; start           0 0.6459961   0.3540039     0</span></span>
+<span><span class="co">#&gt; response        0 0.0000000   1.0000000     0</span></span>
+<span><span class="co">#&gt; progression     0 0.0000000   0.0000000     1</span></span>
+<span><span class="co">#&gt; death           0 0.0000000   0.0000000     0</span></span></code></pre></div>
 <p>Working ok, try different optimizers?</p>
 <p>Advantage of this setup: can plug-in distributions fitted with
 different packages (just provide cum haz table); only need to fill in
@@ -311,6 +654,8 @@ ILD and plug in</li>
 unprecise?</li>
 <li>Explain how an extended MSM can be used to simulate under transition
 specific censoring.</li>
+<li>Use reparametrization trick for efficient maximum likelihood? <a href="https://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html" class="external-link uri">https://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html</a>
+</li>
 </ol></main>
 </div>
 
