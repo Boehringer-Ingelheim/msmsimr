@@ -1,3 +1,12 @@
+#' @title Gradient descent
+#'
+#' @param fn function to optimize
+#' @param gn gradient
+#' @param init initial parameter variables
+#' @param rate learning rate
+#' @param niter number of iteration
+#'
+#' @export
 gradient_descent <- function(fn, gr, init, rate, niter) {
   x <- matrix(NA_real_, nrow = niter + 1, ncol = length(init), byrow = TRUE)
   vals <- numeric(niter + 1)

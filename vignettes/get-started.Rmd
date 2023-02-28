@@ -264,7 +264,7 @@ Try good old gradient descent first.
 ```{r}
 set.seed(42L)
 
-res <- simmsm:::gradient_descent(
+res <- gradient_descent(
   negative_log_likelihood,
   gradient,
   init = initial_values,
