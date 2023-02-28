@@ -9,13 +9,13 @@ gradient_descent(fn, gr, init, rate, niter)
 \arguments{
 \item{fn}{function to optimize}
 
+\item{gr}{gradient}
+
 \item{init}{initial parameter variables}
 
 \item{rate}{learning rate}
 
 \item{niter}{number of iteration}
-
-\item{gn}{gradient}
 }
 \description{
 Gradient descent
